@@ -16,6 +16,8 @@ import subprocess
 
 from PIL import Image, ImageChops, ImageDraw
 
+from generate_weather_effects import soften_snowflake
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_REVISION = "0dd59aa06ef6a315521582f8df6da03a194456ca"
@@ -207,6 +209,8 @@ def make_snowflake(source):
         raise ValueError("Snowflake source must have a transparent background")
     sprite = sprite.crop(bounds)
     sprite.thumbnail((60, 60), Image.Resampling.LANCZOS)
+    sprite, _ = soften_snowflake(sprite)
+    sprite.thumbnail((64, 64), Image.Resampling.LANCZOS)
     tile = Image.new("RGBA", (64, 64))
     tile.paste(sprite, ((64 - sprite.width) // 2, (64 - sprite.height) // 2))
     save_lighting_variants(tile, ROOT / "resources/effects/foliage/winter")

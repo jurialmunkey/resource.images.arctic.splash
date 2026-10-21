@@ -1,6 +1,9 @@
 # Winter snowflake sprite
 
 Generated with the built-in imagegen tool, with a transparent background.
+The original is preserved in `tools/snowflake-source.png`. The rebuild scripts
+fill its crystal branches and blur its alpha into soft, fluffy snow, shared by
+the winter particles and the falling weather tile.
 The runtime artwork is reduced to 64 x 64 pixels with transparent padding and
 uses the existing scene-authoring grade function for eight lighting variants in
 `resources/effects/foliage/winter/`. No animation frames are stored.

@@ -1,9 +1,48 @@
-"""Rebuild the small, vertically seamless rain tile (requires Pillow)."""
+"""Rebuild the small, vertically seamless precipitation tiles (requires Pillow)."""
 
 from pathlib import Path
 from random import Random
 
-from PIL import Image
+from PIL import Image, ImageFilter, ImageOps
+
+
+def soften_snowflake(sprite):
+    """Fill crystal branches and feather alpha for both winter and weather snow."""
+    size = max(sprite.size)
+    blur = max(0.9, size * 0.13)
+    padding = round(blur * 3) + 2
+    alpha = ImageOps.expand(sprite.getchannel("A"), border=padding)
+    alpha = alpha.filter(ImageFilter.MaxFilter(2 * max(1, round(size * 0.08)) + 1))
+    alpha = alpha.filter(ImageFilter.GaussianBlur(blur))
+    # Constant colour under feathered alpha avoids dark rims.
+    flake = Image.new("RGBA", alpha.size, (237, 243, 255, 0))
+    flake.putalpha(alpha)
+    return flake, padding
+
+
+def make_snow():
+    # Reuse the authored snowflake, with varied sizes, angles and softness.
+    # The 300 x 560 tile is drawn at 600 x 1120 with room for vertical lilt.
+    effects = Path(__file__).resolve().parents[1] / "resources/effects"
+    # Keep the original separate from runtime sprites so rebuilds never blur twice.
+    source = Image.open(Path(__file__).with_name("snowflake-source.png")).convert("RGBA")
+    tile = Image.new("RGBA", (300, 560))
+    random = Random(1192)
+    for _ in range(36):
+        size = random.randrange(5, 17)
+        flake = source.rotate(random.randrange(360), Image.Resampling.BICUBIC)
+        flake = flake.resize((size, size), Image.Resampling.LANCZOS)
+        flake, padding = soften_snowflake(flake)
+        opacity = random.uniform(0.45, 0.9)
+        flake.putalpha(flake.getchannel("A").point(lambda a: round(a * opacity)))
+        x = random.randrange(6, tile.width - size - 6)
+        y = random.randrange(tile.height)
+        # Wrap flakes across the vertical seam instead of clipping their shapes.
+        for offset in (-tile.height, 0, tile.height):
+            tile.alpha_composite(flake, (x - padding, y - padding + offset))
+    destination = effects / "snow.png"
+    tile.save(destination, optimize=True)
+    print(f"{destination}: {destination.stat().st_size:,} bytes")
 
 
 def make_rain():
@@ -38,3 +77,4 @@ def make_rain():
 
 if __name__ == "__main__":
     make_rain()
+    make_snow()
