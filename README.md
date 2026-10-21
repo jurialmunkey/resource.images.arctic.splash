@@ -1,6 +1,39 @@
 # Arctic Splash
 
-Kodi image resource add-on `resource.images.arctic.splash`, version 1.0.2.
+Kodi image resource add-on `resource.images.arctic.splash`, version 1.0.5.
+
+## Weather cards
+
+`resources/weather/` contains 49 full-bleed 320 x 720 portrait JPEG cards:
+one distinct Japanese illustration for each Kodi weather fanart code `0` through
+`47`, plus `na` for unavailable conditions. Scenes include Mount Fuji, cherry
+blossoms, Tokyo streets, Kyoto temples, mountain villages, gardens and coasts.
+The artwork depicts the code's precipitation, visibility, wind, cloud cover,
+temperature or day/night condition in the same painted style as the splash.
+
+Use unpadded code filenames, matching Kodi's standard fanart codes:
+
+`special://home/addons/resource.images.arctic.splash/resources/weather/32.jpg`
+
+This follows the direct add-on path already used by the layered splash and
+avoids resource-handler loading failures observed for the cards and fallback.
+
+Unavailable weather uses `weather/na.jpg`. `resources/weather/manifest.json`
+records all code meanings, scenes, individual weather prompts and the common
+style prompt. The mapping follows the
+[official Kodi weather codes](https://kodi.wiki/view/Weather_addons#Weather_Codes).
+The cards are generated individually using built-in imagegen with the Tokyo
+alley illustration from this project as a style reference. They are opaque RGB
+JPEGs at quality 95 with no chroma subsampling, borders or overlay labels.
+
+`tools/weather-cards-preview.jpg` provides a labeled contact sheet. Run
+`python tools/prepare_weather_cards.py` to validate coverage, dimensions and
+distinct artwork and recreate the contact sheet (Pillow required). To prepare
+new built-in imagegen outputs, pass `--sources sources.json`, containing a list
+of objects with `code` and absolute original image `path` fields. Existing cards
+are preserved; resizing uses proportional center fitting and Lanczos sampling.
+
+## Layered splash
 
 The 616 registered 1920 x 1080 image layers are in `resources/layers/`. The
 manifest defines four seasons, five weather patterns and 24 hourly states.
