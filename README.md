@@ -1,6 +1,6 @@
 # Arctic Splash
 
-Kodi image resource add-on `resource.images.arctic.splash`, version 1.0.5.
+Kodi image resource add-on `resource.images.arctic.splash`, version 1.0.6.
 
 ## Weather cards
 
@@ -32,6 +32,30 @@ distinct artwork and recreate the contact sheet (Pillow required). To prepare
 new built-in imagegen outputs, pass `--sources sources.json`, containing a list
 of objects with `code` and absolute original image `path` fields. Existing cards
 are preserved; resizing uses proportional center fitting and Lanczos sampling.
+
+## Watercolour weather cards
+
+`resources/weather-watercolour/` contains a separate set of 49 full-bleed
+320 x 720 portrait cards for the same codes `0` through `47` and `na`.
+The original illustrated set remains in `resources/weather/` with its existing
+filenames and artwork intact. Each style has its own manifest and contact sheet.
+
+The watercolours use broad transparent washes, soft edges, paper texture and
+simplified architecture and foliage, matching the approved Sunny / code 32
+draft. The shared prompt and per-code scene and weather requirements are recorded
+in `resources/weather-watercolour/manifest.json`. Every card is authored with
+built-in imagegen; code 32 uses the approved draft itself.
+
+The forecast cards use the watercolour set, including its `na.jpg` fallback:
+
+`special://home/addons/resource.images.arctic.splash/resources/weather-watercolour/32.jpg`
+
+`tools/weather-watercolour-preview.jpg` shows the full labeled set. Validate it
+and regenerate the preview with
+`python tools/prepare_weather_cards.py --style watercolour`.
+Pass `--sources sources.json` to prepare newly generated originals. The
+preparation tool defaults to the original illustrated set, so both styles
+can be maintained separately without overwriting existing cards.
 
 ## Layered splash
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="resource.images.arctic.splash" name="Arctic Splash" version="1.0.5" provider-name="jurialmunkey">
+<addon id="resource.images.arctic.splash" name="Arctic Splash" version="1.0.6" provider-name="jurialmunkey">
     <requires>
         <import addon="kodi.resource" version="1.0.0" />
     </requires>
     <extension point="kodi.resource.images" compile="false" type="skinbackgrounds" />
     <extension point="xbmc.addon.metadata">
         <summary lang="en_GB">Seasonal splash artwork and Japanese weather cards for Arctic</summary>
-        <description lang="en_GB">Mount Fuji and lake splash artwork with nine composited layers, four seasons, five weather patterns, and 24 hourly states. Includes high quality WebP artwork with lossless transparency, PNG overlays, and 49 illustrated Japanese weather cards at 320 x 720 for Kodi weather codes 0-47 and na.</description>
+        <description lang="en_GB">Mount Fuji and lake splash artwork with nine composited layers, four seasons, five weather patterns, and 24 hourly states. Includes high quality WebP artwork with lossless transparency, PNG overlays, and two separate sets of 49 Japanese weather cards at 320 x 720: original illustrations and simplified watercolours, each covering Kodi weather codes 0-47 and na.</description>
         <platform>all</platform>
     </extension>
 </addon>
