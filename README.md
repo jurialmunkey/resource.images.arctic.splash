@@ -41,9 +41,18 @@ continuous rightward loop behind the mountains (6.4 pixels per second). Original
 mirrored copies meet at matching edges; two identical pairs cover the full
 3840-pixel loop so the restart has exactly the same image as the end. A faint,
 vertically flipped and compressed copy moves in sync over the lake, below the
-foreground trees. The shoreline and mountain reflection stay fixed. The cloud
+foreground trees. The shoreline stays fixed. The cloud
 animation adds no image assets or animation frames. Foreground haze uses the
 same loop at half the speed during hazy conditions.
+
+Lake ripples reuse the existing hourly lake texture with two tiny 4 x 1080
+diffuse masks, `resources/effects/lake-odd.png` and `lake-even.png`. The masks
+select alternating horizontal bands with feathered joins, widening toward the
+viewer and fading out near the distant bank. Two native skin slide animations
+move these bands three pixels in opposite directions, beneath the trees and
+time-of-day grade. The base lake and shoreline stay registered; no new lake
+artwork or animation frames are needed. Rebuild the masks with
+`python tools/generate_lake_masks.py` (Pillow).
 
 Each season uses one small transparent sprite shape in
 `resources/effects/foliage/`. Spring petals and autumn leaves were extracted from
